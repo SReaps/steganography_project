@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Steganography Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+
+  <style>
+    body{
+      font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+      background-color: rgb(244, 246, 248);
+    }
+
+    body::-webkit-scrollbar{
+      width: 0px;
+      background:transparent;
+  }
+
+    .hero{
+      background-color:rgb(233, 241, 251);
+      border-radius:12px;
+      box-shadow:0 4px 8px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      padding:80px 20px 60px 20px;
+      margin-top:100px;
+      
+    }
+
+    .hero h1{
+      font-size:3rem;
+      margin-bottom:15px;
+      font-weight:600;
+    }
+
+    .hero p{
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    .infocard{
+      background:rgb(255,255,255);
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s ease;
+      
+
+    }
+
+    .infocard:hover{
+    transform: translateY(-5px);
+    }
+
+    .btn-lg{
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+    }
+
+    .footer{
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color:rgb(110, 168, 231);
+      display: flex;
+      justify-content: center;
+      padding: 4px;
+      color: rgb(255,255,255);
+      
+    }
+
+    .explaining{
+      background:rgba(0, 0, 0, 0.1); 
+      padding: 10px; 
+      border-radius: 6px;
+      
+
+    }
+
+    nav.navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+  z-index: 999;
+}
+
+    
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+      <span>Steganography Tool</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'encode' %}">Encode</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'decode' %}">Decode</a>
+          </li>
+        </ul>
+    </div>
+  </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="hero">
+      <h1 class="head">Steganography Tool</h1>
+      <p class="sub">Hide secret messages within images, or extract them with ease and precision</p>
+      <div class="mt">
+      <a href="/encode" class="btn btn-primary btn-lg me-3">Start Encoding</a>
+      <a href="/decode" class="btn btn-outline-secondary btn-lg">Start Decoding</a>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-6">
+      <div class="infocard">
+          <h3 class="mb-3">What Does The Encoding Function Do?</h3>
+          <p>
+            Hide a secret message inside an image without visibly changing it. 
+            You choose how much data to embed using the bit choosing function — More bits mean more room, 
+            but more noticeable changes on the image quality
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+      <div class="infocard">
+          <h3 class="mb-3">What Does The Decoding Function Do?</h3>
+          <p>
+            Upload an image with a hidden message, and this tool will reveal the original text for you by analysing 
+            and extracting the modified pixel data that is hidden in the image — If it's there that is
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="infocard">
+          <h3>Choosing The Number Of Bits</h3>
+          <p>The number of bits affects the message size and the visual quality of the image:</p>
+        <ul>
+        <li><strong>1-3 bits:</strong> Minimal impact on image quality, ideal for short messages</li>
+        <li><strong>4 bits:</strong> Good balance of quality and capacity</li>
+        <li><strong>5-8 bits:</strong> Larger messages, but visible image distortion may occur</li>
+        </ul>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col">
+      <div class="infocard">
+          <h3>How Encoding Works</h3>
+          <p>
+            This tool uses <strong>Least Significant Bit (LSB)</strong> steganography to embed your message into the pixel data of the image. Each color channel 
+            (Red, Green, and Blue) is made of 1 byte or 8 bits. We hide bits of your message in the lower bits of those channels 
+            — the number of which depends on your chosen bit
+          </p>
+
+          <h5>Example (1 bit)</h5>
+          <p>Say we have this pixel:</p>
+          <pre class="explaining">
+          Red:   10101100  
+          Green: 11010110  
+          Blue:  11100001</pre>
+            
+          <p>And we want to embed the message bits <strong>011</strong>:</p>
+          <pre class="explaining">
+          Red:   10101100 -> 10101100 (last bit stays 0)  
+          Green: 11010110 -> 11010111  (change last bit to 1)  
+          Blue:  11100001 -> 11100000  (change last bit to 0) </pre>
+
+          <p>
+            The visual change looks the same to the human eye, but now it has a message hidden inside the image!
+            This changes when you start using a bit higher than 3, you will see the image start distortating
+          </p>
+      </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="infocard">
+          <h3>Choosing The Right File</h3>
+          <p>This steganography tool supports the following image formats:</p>
+          <ul>
+          <li><strong>PNG:</strong> Fully supported and lossless, works great for encoding, including ones with transparent background</li>
+          <li><strong>JPG / JPEG:</strong> Supported, but note that compression may reduce accuracy</li>
+          <li><strong>GIF:</strong> teeny tiny supported, works only with first frame of the gif, the rest gets voided</li>
+          <li><strong>WEBP:</strong> supported, will be saved as a PNG to to make it lossless and preserve hidden messages</li>
+          </ul>
+
+          <p>File Types That Are Not Supported:</p>
+          <ul>
+          <li><strong>AVIF:</strong> Not supported due to heavy lossy compression, completely ruins the encoded data</li>
+          <li><strong>ETC:</strong> Other formats not listed above may not function properly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  
+
+  <footer class="footer">
+    <br>
+
+    <p>&copy;2025 Steganography Tool. All rights reserved.</p>
+</footer>
+</body>
+</html>
