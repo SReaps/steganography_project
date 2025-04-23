@@ -125,19 +125,19 @@ def decode_message(image_path):
 
         bits = []
         for i in range(3,len(flat)):
-            cover = format(flat[i] & ((1 << BitDepth) -1), f'0{BitDepth}b')
+            cover = format(flat[i] & ((1 << BitDepth) -1),f'0{BitDepth}b')
             bits.append(cover)
 
         binary_message = ''.join(bits)
         delimiter = '1111111111111110'
-        end_CurrentBit = binary_message.find(delimiter)
+        CurrentBit = binary_message.find(delimiter)
 
-        if end_CurrentBit == -1:
+        if CurrentBit == -1:
             raise ValueError("Delimiter not found")
 
-        message_bits = binary_message[:end_CurrentBit]
-        message_bits = message_bits[:len(message_bits) -(len(message_bits) %8)]
-        message = ''.join(chr(int(message_bits[i:i+8],2)) for i in range(0,len(message_bits),8))
+        MessageBits = binary_message[:CurrentBit]
+        MessageBits = MessageBits[:len(MessageBits) -(len(MessageBits) %8)]
+        message = ''.join(chr(int(MessageBits[i:i+8],2)) for i in range(0,len(MessageBits),8))
 
         if not TextChecker(message):
             raise ValueError("Decoded message is not a valid ASCII")
