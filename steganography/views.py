@@ -72,10 +72,10 @@ def decode(request):
     if request.method == "POST" and request.FILES.get('image'):
         try:
             image_file = request.FILES['image']
-            print(f"Received image: {image_file.name}")
+            #print(f"Received image: {image_file.name}")
             temp_image_name = default_storage.save(image_file.name, image_file)
             temp_image_path = os.path.join(settings.MEDIA_ROOT, temp_image_name)
-            print(f"Temporary image saved at: {temp_image_path}") 
+            #print(f"Temporary image saved at: {temp_image_path}") 
 
             decoded_message = decode_message(temp_image_path)
             os.remove(temp_image_path)

@@ -121,7 +121,7 @@ def decode_message(ImagePath):
 
         BitsReader= ''.join([str(flat[i] & 1) for i in range(3)])
         BitDepth = int(BitsReader,2)+1
-        print(f"Extracted bit depth from header: {BitDepth}")
+        #print(f"Extracted bit depth from header: {BitDepth}")
 
         bits = []
         for i in range(3,len(flat)):
