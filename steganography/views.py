@@ -56,7 +56,7 @@ def encode(request):
             os.remove(temp_image_path)
             os.remove(encoded_image_path)
             return JsonResponse({
-                "success": True, "encoded_image": encoded_image_data
+                #"success": True, "encoded_image": encoded_image_data
         
         })
         except Exception as e:
@@ -82,7 +82,7 @@ def decode(request):
             print("Temporary file removed.")
             
             return JsonResponse({
-                "success": True, "message": decoded_message
+                #"success": True, "message": decoded_message
             })
 
 
