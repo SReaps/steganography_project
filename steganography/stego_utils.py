@@ -142,7 +142,7 @@ def decode_message(ImagePath):
         if not TextChecker(message):
             raise ValueError("Decoded message is not a valid ASCII")
 
-        print("Decoded message:",message)
+        #print("Decoded message:",message)
         return message
 
     except Exception as e:
