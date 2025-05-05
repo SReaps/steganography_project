@@ -2,7 +2,8 @@ This is a Final Years project by Hamim Ali - w1908784
 University of Westminster 
 
 To run this project you need in the local host you just need to do the following:
-1. python manage.py runserver
+1. pip install -r requirements.txt
+2. python manage.py runserver
 
 if that doesnt work, run the following code and try again: 
 1. cd steganography_project 
